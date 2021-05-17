@@ -1,6 +1,9 @@
 package find_words;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +36,13 @@ public class find_words {
         try (BufferedReader buff = new BufferedReader(new FileReader(f))) {
             String line;
             String lineSep = System.getProperty("line.separator");
-            FileWriter writer = new FileWriter(file_name, true);
+            String dir = !file_name.contains(".") ? file_name : file_name.substring(0, file_name.indexOf("."));
+            String theDir = f.getParent() + "\\" + dir;
+            Path path = Paths.get(theDir);
+            if (!Files.exists(path)) {
+                Files.createDirectory(path);
+            }
+            FileWriter writer = new FileWriter(path + "\\" + file_name, true);
             while ((line = buff.readLine()) != null) {
                 if (line.contains(word)) {
                     writer.write(line + lineSep);
